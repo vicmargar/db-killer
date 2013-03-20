@@ -41,7 +41,7 @@ def kill(params)
       days.times do |i|
         date = Date.today + i
         date_price = room_price - rand(-10..10)
-        date_available = room_capacity - rand(0..room_capacity)
+        date_available = room_capacity - rand(0..room_capacity-1)
         killer_values << "(#{host_id}, #{room_id}, '#{date}', #{date_price}, #{date_available})"
       end
     end
