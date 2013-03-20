@@ -49,8 +49,11 @@ def kill(params)
 
   $client.query("INSERT INTO hosts (id) VALUES#{host_values.join(',')}")
   $client.query("INSERT INTO rooms (id, host_id, capacity) VALUES#{room_values.join(',')}")
-  $client.query("INSERT INTO killer (host_id, room_id, date, price, available) VALUES#{killer_values.join(',')}")
+
+  killer_values.each_slice(1000) do |slice|
+    $client.query("INSERT INTO killer (host_id, room_id, date, price, available) VALUES#{slice.join(',')}")
+  end
 end
 
 # kill(hosts: 1000, rooms_per_host:2, days: 365)
-kill(hosts: 2, rooms_per_host:2, days: 5)
+kill(hosts: 500, rooms_per_host:2, days: 100)
