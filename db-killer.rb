@@ -18,13 +18,15 @@ def kill(count, days)
     p = rand(20..120)
     c = rand(1..5)
 
+    values = []
     days.times do |i|
       date = Date.today + i
       vp = p - rand(-10..10)
       vc = c - rand(0..c)
 
-      $client.query("INSERT INTO killer (ref, date, v, c) VALUES (#{ref}, '#{date}', #{vp}, #{vc})")
+      values << "(#{ref}, '#{date}', #{vp}, #{vc})"
     end
+    $client.query("INSERT INTO killer (ref, date, v, c) VALUES#{values.join(',')}")
   end
 end
 
