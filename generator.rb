@@ -23,6 +23,7 @@ def kill(params)
   $client.query("CREATE TABLE rooms (id INTEGER NOT NULL, host_id INTEGER NOT NULL, capacity INTEGER NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB;")
   $client.query("CREATE TABLE killer (id INTEGER NOT NULL AUTO_INCREMENT, host_id INTEGER NOT NULL, room_id INTEGER NOT NULL, date DATE NOT NULL, price INTEGER NOT NULL, available INTEGER NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB;")
 
+  $client.query("ALTER TABLE killer ADD INDEX killer_index(date, room_id, available, price, host_id);")
 
   host_values   = []
   room_values   = []
@@ -56,4 +57,4 @@ def kill(params)
 end
 
 # kill(hosts: 1000, rooms_per_host:2, days: 365)
-kill(hosts: 500, rooms_per_host:2, days: 100)
+kill(hosts: 5000, rooms_per_host:2, days: 100)
