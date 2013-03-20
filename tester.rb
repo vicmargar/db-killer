@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'bundler'
+require 'benchmark'
 
 Bundler.require
 
@@ -16,18 +17,21 @@ else
   end_date = Date.today + 45
 end
 
-results = $client.query <<EOF
-  SELECT ref, SUM(price) AS total FROM killer
-  WHERE
-    date BETWEEN "#{start_date}" AND "#{end_date}"
-  GROUP BY ref
-  ORDER BY total
+time = Benchmark.realtime do
+  $results = $client.query <<EOF
+    SELECT ref, SUM(price) AS total FROM killer
+    WHERE
+      date BETWEEN "#{start_date}" AND "#{end_date}"
+    GROUP BY ref
+    ORDER BY total
 EOF
+end
+puts "Query took #{time}s"
 puts "------------------"
 puts "|    Ref | Total |"
 puts "------------------"
 
-results.each(:symbolize_keys => true) do |row|
+$results.each(:symbolize_keys => true) do |row|
   puts "| #{row[:ref].to_s.rjust 6} | #{row[:total].to_i.to_s.rjust 5} |"
 end
 
