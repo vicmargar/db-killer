@@ -12,20 +12,20 @@ $client.query("USE killer")
 
 def kill(count, days)
   $client.query("DROP TABLE IF EXISTS killer")
-  $client.query("CREATE TABLE killer (id INTEGER NOT NULL AUTO_INCREMENT, ref INTEGER NOT NULL, date DATE NOT NULL, v INTEGER NOT NULL, c INTEGER NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB;")
+  $client.query("CREATE TABLE killer (id INTEGER NOT NULL AUTO_INCREMENT, ref INTEGER NOT NULL, date DATE NOT NULL, price INTEGER NOT NULL, available INTEGER NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB;")
   count.times do |ref|
-    p = rand(20..120)
-    c = rand(1..5)
+    price = rand(20..120)
+    available = rand(1..5)
 
     values = []
     days.times do |i|
       date = Date.today + i
-      vp = p - rand(-10..10)
-      vc = c - rand(0..c)
+      date_price = price - rand(-10..10)
+      date_available = available - rand(0..available)
 
-      values << "(#{ref}, '#{date}', #{vp}, #{vc})"
+      values << "(#{ref}, '#{date}', #{date_price}, #{date_price})"
     end
-    $client.query("INSERT INTO killer (ref, date, v, c) VALUES#{values.join(',')}")
+    $client.query("INSERT INTO killer (ref, date, price, available) VALUES#{values.join(',')}")
   end
 end
 
